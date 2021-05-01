@@ -1,39 +1,54 @@
-import { useState } from "react";
+import { Button, FormControl, Input, InputLabel } from "@material-ui/core";
+import { useState, useEffect } from "react";
 // import logo from './logo.svg';
 import './App.css';
+import Message from "./components/Message";
 
-// 28:00
+// 1:02:00
+
+// REACT hooks -->
+// useState = it's like a vraible in REACT, which stores temporary memory
+// useEffct = it's a block of code tht gets executed based on a condition
 
 function App() {
 
   const [input, setInput] = useState('');
-  console.log(input);
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState([]) //This is an array of objects, check on line 26
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    setUsername(prompt('Please enter your Name : '));
+  }, [])
 
   const sendMessage = (event) => { //Contains logic to send messages
-      setMessages([...messages, input]);//Saves all messages as an array
+      event.preventDefault(); //prevents the page from refreshing automatically
+                              // (hence, stops the page from forgetting all state memory)
+      setMessages([...messages, {username: username, text: input}]);//Saves all messages as an array of objects. 
+                       // where name stores the username from the prompt & text stores whtever we input in the form
       setInput(''); //After pressing send, Make textbox empty
   }
-  console.log(messages);
+  
 
   return (
-    <div className="App">
+    <div className="App container">
       <h1>New to React !!</h1>
+      <h1>Welcome {username}</h1>
 
       {/* We are wrapping the input & button in a form, bcz 'enter key' doesn't work without it */}
-      <form>
-          <input value={input} onChange={event => setInput(event.target.value)} />
-          <button type='submit' onClick={sendMessage} >Send</button>
-      </form>      
+      <FormControl>
+        <InputLabel>Message</InputLabel>
+        <Input value={input} onChange={event => setInput(event.target.value)} />
+        <Button disabled={!input} variant="contained" color="primary" type='submit' onClick={sendMessage} >Send</Button>
+      </FormControl>
       {/* The above code is used to continuously update and set the value of input to whtever is typed in the input field*/}
 
-      
-      
       {
         messages.map(message => (
-          <p>{message}</p>
+          <Message username={message.username} text={message.text}/>
         ))
       }
+      {/* Above code loops through all the msgs in the messages array, and displays it.
+       username & text are props, which we are passing to the Message.js component */}
 
     </div>
   );
