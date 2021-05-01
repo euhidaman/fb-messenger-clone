@@ -1,0 +1,22 @@
+.message_card {
+    padding: 5px;
+    margin: 10px;
+    width: fit-content;
+}
+
+.message_user {
+    margin-left: auto;
+    color: white;
+    text-align: left !important;
+}
+
+/* The !important tag is used to override all the previous stylings. 
+    Basically, it means to provide more importance to the style on which it's tagged */
+
+.message_userCard {
+    background-color:#09cdeb !important;
+}
+
+.message_guestCard {
+    background-color :beige !important;
+}
