@@ -1,10 +1,12 @@
 import { Button, FormControl, Input, InputLabel } from "@material-ui/core";
 import { useState, useEffect } from "react";
-// import logo from './logo.svg';
 import './App.css';
 import Message from "./components/Message";
+import db from './firebase';
+import firebase from 'firebase';
+import FlipMove from 'react-flip-move';
 
-// 1:19:00
+// 2:00:00
 
 // REACT hooks -->
 // useState = it's like a vraible in REACT, which stores temporary memory
@@ -16,15 +18,33 @@ function App() {
   const [messages, setMessages] = useState([]) //This is an array of objects, check on line 26
   const [username, setUsername] = useState('');
 
-  useEffect(() => {
+  useEffect(() => 
+  { //run once, for when the main App component loads
+    db.collection('messages').orderBy('timestamp', 'asc').onSnapshot(
+      snapshot => {  //snapshot is for continuously checking the firestore database
+        setMessages(snapshot.docs.map(doc => ({ id: doc.id, message: doc.data() }))) // 'docs' is the entire document consisting of many 'doc'
+        //  'doc' is each individual document in the 'docs'. 'doc' is the key-value pair present in each document, as an object.
+        // 'id' is the unique key that is present in firestore for each doc , Format of 'data'  --> {text: 'something' , username: 'name'}
+        // Finally, 'doc' and 'message' is of the format --> {id: 'unique_doc_key', text: 'something' , username: 'name'}
+      })
+  }, [])
+
+  
+
+  useEffect(() => { //This is for getting username
     setUsername(prompt('Please enter your Name : '));
   }, [])
 
   const sendMessage = (event) => { //Contains logic to send messages
-      event.preventDefault(); //prevents the page from refreshing automatically
-                              // (hence, stops the page from forgetting all state memory)
-      setMessages([...messages, {username: username, text: input}]);//Saves all messages as an array of objects. 
-                       // where name stores the username from the prompt & text stores whtever we input in the form
+      event.preventDefault(); // prevents the page from refreshing automatically (hence, stops the page from forgetting all state memory)
+      window.scrollTo(0, 999999999999); //After typing message, it scrolls down to show the recent message
+
+      db.collection('messages').add({  // This is used to add to firestore backend (from line 39-43)
+        text: input,
+        username: username,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      })
+
       setInput(''); //After pressing send, Make textbox empty
   }
   
@@ -42,11 +62,14 @@ function App() {
       </FormControl>
       {/* The above code is used to continuously update and set the value of input to whtever is typed in the input field*/}
 
-      {
-        messages.map(message => (
-          <Message username={username} message={message}/>
-        ))
-      }
+
+      <FlipMove>
+        {
+          messages.map( ({id, message}) => ( // here message & id are from line 25
+            <Message key={id} username={username} message={message} />
+          ))
+        }
+      </FlipMove>
       {/* Above code loops through all the msgs in the messages array, and displays it.
        username & message are props, which we are passing to the Message.js component.
        The username, is the person who's logged in. And, we are passing the whole message as a prop
@@ -55,5 +78,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
