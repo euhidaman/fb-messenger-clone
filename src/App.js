@@ -8,8 +8,6 @@ import FlipMove from 'react-flip-move';
 import logo from "./logo.svg";
 import SendIcon from '@material-ui/icons/Send';
 
-// 2:00:00
-
 // REACT hooks -->
 // useState = it's like a vraible in REACT, which stores temporary memory
 // useEffct = it's a block of code tht gets executed based on a condition
