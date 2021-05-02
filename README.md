@@ -23,6 +23,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Features
 This is a WebApp, which is a clone of Facebook's Messenger. <br>
-It is different form other REACT clones because, the messages that are recieved here are always added to the bottom.<br>
+It is different from other REACT clones because, the messages that are recieved here are always added to the bottom.<br>
 Since, It's also connected to a realtime database ( FIREBASE ),
- many users can use this app without any delay.
+ many users can use this app without any delay.<br>
+Also, it uses MATERIAL UI, which provides a slick and beautiful design to the entire WebApp.
