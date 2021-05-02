@@ -16,8 +16,8 @@ const Message = forwardRef(({ message, username }, ref) => { //Destructuring the
                 {/* The code above in className means, if the isUser variable is true, 
                 then the 'message_userCard' else 'message_guestCard' class is added */}
                 <CardContent>
-                    <Typography color='white' variant='h5' component='h2'>
-                        {message.username} : {message.text}
+                    <Typography color='white' variant='h5' component='h3'>
+                        {!isUser && `${message.username || "Unknown User"} : `} {message.text}
                     </Typography>
                 </CardContent>
             </Card>
