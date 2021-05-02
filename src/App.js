@@ -1,4 +1,4 @@
-import { Button, FormControl, IconButton, Input, InputLabel } from "@material-ui/core";
+import { FormControl, IconButton, Input } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import './App.css';
 import Message from "./components/Message";
